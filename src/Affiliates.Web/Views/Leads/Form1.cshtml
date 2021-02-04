@@ -1,0 +1,32 @@
+﻿@model LeadInputModel
+
+@{
+    ViewData["Title"] = "Form 1";
+}
+
+<form asp-controller="Leads" asp-action="Form1" method="post">
+    <fieldset>
+        <legend>Form 1</legend>
+        <div class="mb-3">
+            <label class="form-label" asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName" />
+            <span asp-validation-for="FirstName" role="alert"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="LastName"></label>
+            <input class="form-control" asp-for="LastName" />
+            <span asp-validation-for="LastName" role="alert"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="ContactNumber"></label>
+            <input class="form-control" asp-for="ContactNumber" />
+            <span asp-validation-for="ContactNumber" role="alert"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </fieldset>
+</form>
+
+@section scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
