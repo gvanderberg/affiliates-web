@@ -9,6 +9,8 @@
     {
         public static string SectionName = "LeadApi";
 
+        public string ApiKey { get; set; }
+
         public string BaseUri { get; set; }
 
         public string PostUri { get; set; }

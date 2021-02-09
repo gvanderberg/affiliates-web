@@ -14,19 +14,29 @@ namespace Affiliates.Web.Controllers
 
         private readonly ILogger<LeadsController> _logger;
 
-        public LeadsController(ILogger<LeadsController> logger, ILeadService leadService)
+        private readonly LeadApiSettings _settings;
+
+        public LeadsController(ILogger<LeadsController> logger, ILeadService leadService, LeadApiSettings settings)
         {
             _logger = logger;
             _leadService = leadService;
+            _settings = settings;
         }
 
         public IActionResult Form1()
+        {
+            ViewBag.Url = $"{_settings.BaseUri}/{_settings.PostUri}";
+
+            return View();
+        }
+
+        public IActionResult Form2()
         {
             return View();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Form1(LeadInputModel model)
+        public async Task<IActionResult> Form2(LeadInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -35,12 +45,17 @@ namespace Affiliates.Web.Controllers
 
             var reponse = await _leadService.SubmitAsync(model);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Success), reponse);
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Success(ResultModel model)
+        {
+            return View(model);
         }
     }
 }

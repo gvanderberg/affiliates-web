@@ -1,9 +1,8 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-using Affiliates.Web.Extensions;
 using Affiliates.Web.Models;
 
 using Microsoft.Extensions.Logging;
@@ -25,19 +24,30 @@ namespace Affiliates.Web.Services
             _settings = settings;
         }
 
+        private async Task<TModel> _ParseModel<TModel>(HttpContent content)
+        {
+            var json = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var model = JsonSerializer.Deserialize<TModel>(json);
+
+            return model;
+        }
+
         public async Task<ResultModel> SubmitAsync(LeadInputModel model)
         {
             var lead = model.ToLead();
-            var json = lead.ToJson();
 
             var response = await _httpClient.PostAsJsonAsync(_settings.PostUri, lead).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {
+                var error = await _ParseModel<ErrorModel>(response.Content).ConfigureAwait(false);
 
+                _logger.LogError(error.Title, error);
             }
 
-            return new ResultModel();
+            var result = await _ParseModel<ResultModel>(response.Content).ConfigureAwait(false);
+
+            return result;
         }
     }
 }

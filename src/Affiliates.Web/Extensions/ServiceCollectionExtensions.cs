@@ -22,10 +22,13 @@ namespace Affiliates.Web
         {
             var baseAddress = configuration.GetValue<string>("LeadApi:BaseUri");
 
-            services.AddHttpClient<ILeadService, LeadService>(client => client.BaseAddress = new Uri(baseAddress));
+            services.AddHttpClient<ILeadService, LeadService>(client => client.BaseAddress = new Uri(baseAddress)).AddHttpMessageHandler<ClientCredentialDelegatingHandler>();
 
             services.AddSingleton(provider => provider.GetService<IOptions<AppSettings>>()?.Value);
             services.AddSingleton(provider => provider.GetService<IOptions<LeadApiSettings>>()?.Value);
+
+            services.AddTransient<ClientCredentialDelegatingHandler>();
+            services.AddTransient<ITokenService, TokenService>();
 
             return services;
         }
