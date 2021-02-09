@@ -10,7 +10,7 @@ Please make sure you update **appsettings.json** with the correct values.
   "LeadApi": {
     "ApiKey": "abc-123",
     "BaseUri": "https://base-uri.com",
-    "PostUri": "xxx/api/path/post"
+    "PostUri": "some/api/path/post"
   }
 ```
 
