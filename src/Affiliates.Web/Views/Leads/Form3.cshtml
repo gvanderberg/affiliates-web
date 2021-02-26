@@ -4,9 +4,9 @@
     ViewData["Title"] = "Form 1";
 }
 
-<form asp-controller="Leads" asp-action="Form1" class="form" method="post">
+<form asp-controller="Leads" asp-action="Form3" class="form" method="post">
     <fieldset>
-        <legend>Form 1</legend>
+        <legend>Form 3</legend>
         <div class="mb-3">
             <label class="form-label" asp-for="FirstName"></label>
             <input class="form-control" asp-for="FirstName" value="John" />
@@ -35,19 +35,18 @@
             var $form = $(event.currentTarget);
 
             var data = {
-                "phone-number": $("#ContactNumber").val(),
-                "contact-person": {
-                    "first-name": $("#FirstName").val(),
-                    "last-name": $("#LastName").val()
-                }
+                "contactNumber": $("#ContactNumber").val(),
+                "firstName": $("#FirstName").val(),
+                "lastName": $("#LastName").val()
             };
 
             // ajax POST
             $.ajax({
-                url: "@ViewBag.Url",
+                url: "/Leads/Form3",
                 method: "POST",
+                contentType: "application/json",
                 data: JSON.stringify(data),
-                datatype: "jsonp",
+                datatype: "json",
                 success: handleResponse,
                 error: handleError,
                 complete: function (jqXHR, status) {
@@ -60,12 +59,12 @@
 
         function handleResponse(res) {
             debugger;
-            alert("success");
+            window.location.href = "/Leads/Success?reference=" + res;
         }
 
         function handleError(err) {
             debugger;
-            alert("failure");
+            alert(err.responseText);
         }
     });
 </script>

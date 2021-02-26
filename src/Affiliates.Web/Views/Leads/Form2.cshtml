@@ -1,4 +1,4 @@
-﻿@model LeadInputModel
+@model LeadInputModel
 
 @{
     ViewData["Title"] = "Form 2";
@@ -9,17 +9,17 @@
         <legend>Form 2</legend>
         <div class="mb-3">
             <label class="form-label" asp-for="FirstName"></label>
-            <input class="form-control" asp-for="FirstName" />
+            <input class="form-control" asp-for="FirstName" value="John" />
             <span asp-validation-for="FirstName" role="alert"></span>
         </div>
         <div class="mb-3">
             <label class="form-label" asp-for="LastName"></label>
-            <input class="form-control" asp-for="LastName" />
+            <input class="form-control" asp-for="LastName" value="Doe" />
             <span asp-validation-for="LastName" role="alert"></span>
         </div>
         <div class="mb-3">
             <label class="form-label" asp-for="ContactNumber"></label>
-            <input class="form-control" asp-for="ContactNumber" />
+            <input class="form-control" asp-for="ContactNumber" value="0000000000" />
             <span asp-validation-for="ContactNumber" role="alert"></span>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>

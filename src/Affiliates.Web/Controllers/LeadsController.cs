@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using Affiliates.Web.Models;
 using Affiliates.Web.Services;
@@ -35,6 +35,11 @@ namespace Affiliates.Web.Controllers
             return View();
         }
 
+        public IActionResult Form3()
+        {
+            return View();
+        }
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Form2(LeadInputModel model)
         {
@@ -45,7 +50,20 @@ namespace Affiliates.Web.Controllers
 
             var reponse = await _leadService.SubmitAsync(model);
 
-            return RedirectToAction(nameof(Success), reponse);
+            return RedirectToAction(nameof(Success), new { reference = reponse.ReferenceNumber });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Form3([FromBody] LeadInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(model);
+            }
+
+            var reponse = await _leadService.SubmitAsync(model);
+
+            return Json(reponse.ReferenceNumber);
         }
 
         public IActionResult Index()
@@ -53,9 +71,9 @@ namespace Affiliates.Web.Controllers
             return View();
         }
 
-        public IActionResult Success(ResultModel model)
+        public IActionResult Success(string reference)
         {
-            return View(model);
+            return View(new ResultModel { ReferenceNumber = reference });
         }
     }
 }
